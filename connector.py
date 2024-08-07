@@ -1,4 +1,5 @@
 import duckdb
 
 def set_connection():
-    return duckdb.connect('my.db')
+    credentials='my.db'
+    return duckdb.connect(credentials)

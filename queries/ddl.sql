@@ -1,229 +1,224 @@
-CREATE TABLE "Countrys" (
-	"id"	INTEGER PRIMARY KEY,
-	"name"	TEXT UNIQUE
+-- Country 
+create table Country (
+	country_id integer not null unique
+	, name text	
+	, primary key (country_id)
 );
 
-CREATE TABLE "Players" (
-	"id"	INTEGER PRIMARY KEY,
-	"player_api_id"	INTEGER UNIQUE,
-	"player_name"	TEXT,
-	"player_fifa_api_id"	INTEGER UNIQUE,
-	"birthday"	TEXT,
-	"height"	INTEGER,
-	"weight"	INTEGER
+-- Team
+create table Team (
+	id integer not null unique
+	, team_api_id integer unique
+	, team_fifa_api_id integer
+	, team_long_name text
+	, team_short_name text
+	, primary key (id)
 );
 
-CREATE TABLE "Teams" (
-	"id"	INTEGER PRIMARY KEY,
-	"team_api_id"	INTEGER UNIQUE,
-	"team_fifa_api_id"	INTEGER UNIQUE,
-	"team_long_name"	TEXT,
-	"team_short_name"	TEXT
+-- Player
+create table Player (
+	id integer not null unique
+	, player_api_id integer unique
+	, player_name text
+	, player_fifa_api_id integer
+	, birthday timestamp
+	, height real
+	, weight real
+	, primary key (id)
 );
 
-CREATE TABLE "League" (
-	"id"	INTEGER PRIMARY KEY,
-	"country_id"	INTEGER,
-	"name"	TEXT UNIQUE,
-	FOREIGN KEY("country_id") REFERENCES "Countrys"("id")
+-- League
+create table League (
+	league_id integer not null unique
+	, country_id integer not null
+	, name text
+	, primary key (league_id)
+	, foreign key (country_id) references country(country_id)
 );
 
-CREATE TABLE "Player_Attributes" (
-	"id"	INTEGER PRIMARY KEY,
-	"player_fifa_api_id"	INTEGER,
-	"player_api_id"	INTEGER,
-	"date"	TEXT,
-	"overall_rating"	INTEGER,
-	"potential"	INTEGER,
-	"preferred_foot"	TEXT,
-	"attacking_work_rate"	TEXT,
-	"defensive_work_rate"	TEXT,
-	"crossing"	INTEGER,
-	"finishing"	INTEGER,
-	"heading_accuracy"	INTEGER,
-	"short_passing"	INTEGER,
-	"volleys"	INTEGER,
-	"dribbling"	INTEGER,
-	"curve"	INTEGER,
-	"free_kick_accuracy"	INTEGER,
-	"long_passing"	INTEGER,
-	"ball_control"	INTEGER,
-	"acceleration"	INTEGER,
-	"sprint_speed"	INTEGER,
-	"agility"	INTEGER,
-	"reactions"	INTEGER,
-	"balance"	INTEGER,
-	"shot_power"	INTEGER,
-	"jumping"	INTEGER,
-	"stamina"	INTEGER,
-	"strength"	INTEGER,
-	"long_shots"	INTEGER,
-	"aggression"	INTEGER,
-	"interceptions"	INTEGER,
-	"positioning"	INTEGER,
-	"vision"	INTEGER,
-	"penalties"	INTEGER,
-	"marking"	INTEGER,
-	"standing_tackle"	INTEGER,
-	"sliding_tackle"	INTEGER,
-	"gk_diving"	INTEGER,
-	"gk_handling"	INTEGER,
-	"gk_kicking"	INTEGER,
-	"gk_positioning"	INTEGER,
-	"gk_reflexes"	INTEGER,
-	FOREIGN KEY("player_fifa_api_id") REFERENCES "Players"("player_fifa_api_id"),
-	FOREIGN KEY("player_api_id") REFERENCES "Players"("player_api_id")
+-- Player_Attributes
+create table Player_Attributes (
+	id integer not null unique
+	, player_fifa_api_id integer 
+	, player_api_id integer
+	, date timestamp
+	, overall_rating integer
+	, potential integer
+	, preferred_foot text
+	, attacking_work_rate text
+	, defensive_work_rate text
+	, crossing integer
+	, finishing integer
+	, heading_accuracy integer
+	, short_passing integer
+	, volleys integer
+	, dribbling integer
+	, curve integer
+	, free_kick_accuracy integer
+	, long_passing integer
+	, ball_control integer
+	, acceleration integer
+	, sprint_speed integer
+	, agility integer
+	, reactions integer
+	, balance integer
+	, shot_power integer
+	, jumping integer
+	, stamina integer
+	, strength integer
+	, long_shots integer
+	, aggression integer
+	, interceptions integer
+	, positioning integer
+	, vision integer
+	, penalties integer
+	, marking integer
+	, standing_tackle integer
+	, sliding_tackle integer
+	, gk_diving integer
+	, gk_handling integer
+	, gk_kicking integer
+	, gk_positioning integer
+	, gk_reflexes integer
+	, primary key (id)
+	, foreign key (player_api_id) references Player (player_api_id)
 );
 
-CREATE TABLE "Team_Attributes" (
-	"id"	INTEGER PRIMARY KEY,
-	"team_fifa_api_id"	INTEGER,
-	"team_api_id"	INTEGER,
-	"date"	TEXT,
-	"buildUpPlaySpeed"	INTEGER,
-	"buildUpPlaySpeedClass"	TEXT,
-	"buildUpPlayDribbling"	INTEGER,
-	"buildUpPlayDribblingClass"	TEXT,
-	"buildUpPlayPassing"	INTEGER,
-	"buildUpPlayPassingClass"	TEXT,
-	"buildUpPlayPositioningClass"	TEXT,
-	"chanceCreationPassing"	INTEGER,
-	"chanceCreationPassingClass"	TEXT,
-	"chanceCreationCrossing"	INTEGER,
-	"chanceCreationCrossingClass"	TEXT,
-	"chanceCreationShooting"	INTEGER,
-	"chanceCreationShootingClass"	TEXT,
-	"chanceCreationPositioningClass"	TEXT,
-	"defencePressure"	INTEGER,
-	"defencePressureClass"	TEXT,
-	"defenceAggression"	INTEGER,
-	"defenceAggressionClass"	TEXT,
-	"defenceTeamWidth"	INTEGER,
-	"defenceTeamWidthClass"	TEXT,
-	"defenceDefenderLineClass"	TEXT,
-	FOREIGN KEY("team_fifa_api_id") REFERENCES "Teams"("team_fifa_api_id"),
-	FOREIGN KEY("team_api_id") REFERENCES "Teams"("team_api_id")
+-- Team_Attributes
+create table Team_Attributes (
+	id integer not null unique
+	, team_fifa_api_id integer
+	, team_api_id integer
+	, date timestamp
+	, buildUpPlaySpeed integer
+	, buildUpPlaySpeedClass text
+	, buildUpPlayDribbling integer
+	, buildUpPlayDribblingClass text
+	, buildUpPlayPassing integer
+	, buildUpPlayPassingClass text
+	, buildUpPlayPositioningClass text
+	, chanceCreationPassing integer
+	, chanceCreationPassingClass text
+	, chanceCreationCrossing integer 
+	, chanceCreationCrossingClass text
+	, chanceCreationShooting integer
+	, chanceCreationShootingClass text
+	, chanceCreationPositioningClass text
+	, defencePressure integer
+	, defencePressureClass text
+	, defenceAggression integer
+	, defenceAggressionClass text
+	, defenceTeamWidth integer
+	, defenceTeamWidthClass text
+	, defenceDefenderLineClass text
+	, primary key (id)
+	, foreign key (team_api_id) references Team (team_api_id)
 );
 
-CREATE TABLE "Match" (
-	"id"	INTEGER PRIMARY KEY,
-	"country_id"	INTEGER,
-	"league_id"	INTEGER,
-	"season"	TEXT,
-	"stage"	INTEGER,
-	"date"	TEXT,
-	"match_api_id"	INTEGER UNIQUE,
-	"home_team_api_id"	INTEGER,
-	"away_team_api_id"	INTEGER,
-	"home_team_goal"	INTEGER,
-	"away_team_goal"	INTEGER,
-	"home_player_X1"	INTEGER,
-	"home_player_X2"	INTEGER,
-	"home_player_X3"	INTEGER,
-	"home_player_X4"	INTEGER,
-	"home_player_X5"	INTEGER,
-	"home_player_X6"	INTEGER,
-	"home_player_X7"	INTEGER,
-	"home_player_X8"	INTEGER,
-	"home_player_X9"	INTEGER,
-	"home_player_X10"	INTEGER,
-	"home_player_X11"	INTEGER,
-	"away_player_X1"	INTEGER,
-	"away_player_X2"	INTEGER,
-	"away_player_X3"	INTEGER,
-	"away_player_X4"	INTEGER,
-	"away_player_X5"	INTEGER,
-	"away_player_X6"	INTEGER,
-	"away_player_X7"	INTEGER,
-	"away_player_X8"	INTEGER,
-	"away_player_X9"	INTEGER,
-	"away_player_X10"	INTEGER,
-	"away_player_X11"	INTEGER,
-	"home_player_Y1"	INTEGER,
-	"home_player_Y2"	INTEGER,
-	"home_player_Y3"	INTEGER,
-	"home_player_Y4"	INTEGER,
-	"home_player_Y5"	INTEGER,
-	"home_player_Y6"	INTEGER,
-	"home_player_Y7"	INTEGER,
-	"home_player_Y8"	INTEGER,
-	"home_player_Y9"	INTEGER,
-	"home_player_Y10"	INTEGER,
-	"home_player_Y11"	INTEGER,
-	"away_player_Y1"	INTEGER,
-	"away_player_Y2"	INTEGER,
-	"away_player_Y3"	INTEGER,
-	"away_player_Y4"	INTEGER,
-	"away_player_Y5"	INTEGER,
-	"away_player_Y6"	INTEGER,
-	"away_player_Y7"	INTEGER,
-	"away_player_Y8"	INTEGER,
-	"away_player_Y9"	INTEGER,
-	"away_player_Y10"	INTEGER,
-	"away_player_Y11"	INTEGER,
-	"goal"	TEXT,
-	"shoton"	TEXT,
-	"shotoff"	TEXT,
-	"foulcommit"	TEXT,
-	"card"	TEXT,
-	"cross"	TEXT,
-	"corner"	TEXT,
-	"possession"	TEXT,
-	"B365H"	NUMERIC,
-	"B365D"	NUMERIC,
-	"B365A"	NUMERIC,
-	"BWH"	NUMERIC,
-	"BWD"	NUMERIC,
-	"BWA"	NUMERIC,
-	"IWH"	NUMERIC,
-	"IWD"	NUMERIC,
-	"IWA"	NUMERIC,
-	"LBH"	NUMERIC,
-	"LBD"	NUMERIC,
-	"LBA"	NUMERIC,
-	"PSH"	NUMERIC,
-	"PSD"	NUMERIC,
-	"PSA"	NUMERIC,
-	"WHH"	NUMERIC,
-	"WHD"	NUMERIC,
-	"WHA"	NUMERIC,
-	"SJH"	NUMERIC,
-	"SJD"	NUMERIC,
-	"SJA"	NUMERIC,
-	"VCH"	NUMERIC,
-	"VCD"	NUMERIC,
-	"VCA"	NUMERIC,
-	"GBH"	NUMERIC,
-	"GBD"	NUMERIC,
-	"GBA"	NUMERIC,
-	"BSH"	NUMERIC,
-	"BSD"	NUMERIC,
-	"BSA"	NUMERIC,  
-	FOREIGN KEY("country_id") REFERENCES "Countrys"("id"),
-	FOREIGN KEY("league_id") REFERENCES "League"("id"),
-	FOREIGN KEY("home_team_api_id") REFERENCES "Teams"("team_api_id"),
-	FOREIGN KEY("away_team_api_id") REFERENCES "Teams"("team_api_id"),
-	FOREIGN KEY("home_player_X1") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("home_player_X2") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("home_player_X3") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("home_player_X4") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("home_player_X5") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("home_player_X6") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("home_player_X7") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("home_player_X8") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("home_player_X9") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("home_player_X10") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("home_player_X11") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("away_player_X1") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("away_player_X2") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("away_player_X3") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("away_player_X4") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("away_player_X5") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("away_player_X6") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("away_player_X7") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("away_player_X8") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("away_player_X9") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("away_player_X10") REFERENCES "Players"("player_api_id"),
-	FOREIGN KEY("away_player_X11") REFERENCES "Players"("player_api_id")
+-- Match
+create table Match (
+	id integer not null unique
+	, country_id integer
+	, league_id integer
+	, season text
+	, stage integer
+	, date timestamp
+	, match_api_id integer unique
+	, home_team_api_id integer
+	, away_team_api_id integer
+	, home_team_goal integer
+	, away_team_goal integer
+	, home_player_X1 integer
+	, home_player_X2 integer
+	, home_player_X3 integer
+	, home_player_X4 integer
+	, home_player_X5 integer
+	, home_player_X6 integer
+	, home_player_X7 integer
+	, home_player_X8 integer
+	, home_player_X9 integer
+	, home_player_X10 integer
+	, home_player_X11 integer
+	, away_player_X1 integer
+	, away_player_X2 integer
+	, away_player_X3 integer
+	, away_player_X4 integer
+	, away_player_X5 integer
+	, away_player_X6 integer
+	, away_player_X7 integer
+	, away_player_X8 integer
+	, away_player_X9 integer
+	, away_player_X10 integer
+	, away_player_X11 integer
+	, home_player_Y1 integer
+	, home_player_Y2 integer
+	, home_player_Y3 integer
+	, home_player_Y4 integer
+	, home_player_Y5 integer
+	, home_player_Y6 integer
+	, home_player_Y7 integer
+	, home_player_Y8 integer
+	, home_player_Y9 integer
+	, home_player_Y10 integer
+	, home_player_Y11 integer
+	, away_player_Y1 integer
+	, away_player_Y2 integer
+	, away_player_Y3 integer
+	, away_player_Y4 integer
+	, away_player_Y5 integer
+	, away_player_Y6 integer
+	, away_player_Y7 integer
+	, away_player_Y8 integer
+	, away_player_Y9 integer
+	, away_player_Y10 integer
+	, away_player_Y11 integer
+	, home_player_1 integer
+	, home_player_2 integer
+	, home_player_3 integer
+	, home_player_4 integer
+	, home_player_5 integer
+	, home_player_6 integer
+	, home_player_7 integer
+	, home_player_8 integer
+	, home_player_9 integer
+	, home_player_10 integer
+	, home_player_11 integer
+	, away_player_1 integer	
+	, away_player_2 integer
+	, away_player_3 integer
+	, away_player_4 integer
+	, away_player_5 integer
+	, away_player_6 integer
+	, away_player_7 integer	
+	, away_player_8 integer
+	, away_player_9 integer
+	, away_player_10 integer
+	, away_player_11 integer
+	, primary key (id)
+	, foreign key(country_id) references country(country_id)
+	, foreign key(league_id) references League(league_id)
+	, foreign key(home_team_api_id) references Team(team_api_id)
+	, foreign key(away_team_api_id) references Team(team_api_id)
+	, foreign key(home_player_1) references Player(player_api_id)
+	, foreign key(home_player_2) references Player(player_api_id)
+	, foreign key(home_player_3) references Player(player_api_id)
+	, foreign key(home_player_4) references Player(player_api_id)
+	, foreign key(home_player_5) references Player(player_api_id)
+	, foreign key(home_player_6) references Player(player_api_id)
+	, foreign key(home_player_7) references Player(player_api_id)
+	, foreign key(home_player_8) references Player(player_api_id)
+	, foreign key(home_player_9) references Player(player_api_id)
+	, foreign key(home_player_10) references Player(player_api_id)
+	, foreign key(home_player_11) references Player(player_api_id)
+	, foreign key(away_player_1) references Player(player_api_id)
+	, foreign key(away_player_2) references Player(player_api_id)
+	, foreign key(away_player_3) references Player(player_api_id)
+	, foreign key(away_player_4) references Player(player_api_id)
+	, foreign key(away_player_5) references Player(player_api_id)
+	, foreign key(away_player_6) references Player(player_api_id)
+	, foreign key(away_player_7) references Player(player_api_id)
+	, foreign key(away_player_8) references Player(player_api_id)
+	, foreign key(away_player_9) references Player(player_api_id)
+	, foreign key(away_player_10) references Player(player_api_id)
+	, foreign key(away_player_11) references Player(player_api_id)
 );
-	

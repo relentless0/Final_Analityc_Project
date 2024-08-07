@@ -1,4 +1,4 @@
-"id","country_id","name"
+league_id,country_id,name
 1,1,Belgium Jupiler League
 1729,1729,England Premier League
 4769,4769,France Ligue 1
@@ -9,4 +9,4 @@
 17642,17642,Portugal Liga ZON Sagres
 19694,19694,Scotland Premier League
 21518,21518,Spain LIGA BBVA
-24558,24558,Switzerland Super League 
+24558,24558,Switzerland Super League
