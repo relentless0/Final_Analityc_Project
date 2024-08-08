@@ -39,12 +39,12 @@ app.layout = html.Div(style={"margin":"25px"}, children=[
     
     dbc.Row([        
         dbc.Col([
-            html.H1('Sport Database Visualization', style={'color':'white'}),
+            html.H1('Football Database Visualization', style={'color':'white'}),
             html.H3('(2008-2016)', style={'marginLeft':'200px'}) 
         ], style={'marginLeft':'300px'}, width={'size':'auto'}),
     ], className='app-header'),
     dbc.Row([
-        html.H4('Year:'),
+        html.H4('Choose Year:'),
         html.Div(tab1_dd_year)
     ], style={'marginTop':'20px'}), 
     dbc.Row([
@@ -55,7 +55,7 @@ app.layout = html.Div(style={"margin":"25px"}, children=[
         ])
     ]),
     dbc.Row([
-        html.H4('Year:'),
+        html.H4('Choose Year:'),
         html.Div(tab2_dd_year)
     ], style={'marginTop':'20px'}), 
     dbc.Row([
@@ -66,7 +66,7 @@ app.layout = html.Div(style={"margin":"25px"}, children=[
         ])
     ]),
     dbc.Row([
-        html.H4('Team:'),
+        html.H4('Choose Team:'),
         html.Div(tab3_dd_team)
     ], style={'marginTop':'20px'}), 
     dbc.Row([
@@ -75,7 +75,15 @@ app.layout = html.Div(style={"margin":"25px"}, children=[
                 id='thirdg'
             )
         ])
-    ])
+    ]),
+    dbc.Row([
+        html.H3('All Played Football Matches by Year:'),
+        dbc.Col([
+            dcc.Graph(
+                id='fourthg'
+            )
+        ])
+    ], style={'marginTop': '20px'})
 ])
     
 @app.callback(
@@ -87,9 +95,22 @@ app.layout = html.Div(style={"margin":"25px"}, children=[
 def creat_tab(year):
     year_df = tab1_df[tab1_df['year'] == year]
     gif = px.bar(
-        data_frame=year_df, x='country', y='count',
+        data_frame=year_df, x='country', y='count', title='Number of football matches played by contries by year:',
         template='plotly_dark'
     )
+    gif.update_layout(
+        title={
+            'text': 'Number of football matches played by contries by year:',
+            'x': 0.5,
+            'xanchor': 'center',
+            'font': {'size': 22}  
+        },
+        xaxis_title='Countries',
+        yaxis_title='Number of Matches',
+        xaxis_title_font=dict(size=18),  
+        yaxis_title_font=dict(size=18)   
+    )
+
     return gif
 
 @app.callback(
@@ -101,24 +122,62 @@ def creat_tab(year):
 def creat_tab2(year):
     year_df = tab2_df[tab2_df['year'] == year]
     gif = px.line(
-        data_frame=year_df, x='team', y='count',
+        data_frame=year_df, x='team', y='count', title='Number of matches played by football teams by year',
         template='plotly_dark'
     )
+    gif.update_layout(
+        title={
+            'text': 'Number of matches played by football teams by year:',
+            'x': 0.5,
+            'xanchor': 'center',
+            'font': {'size': 22}  
+        },
+        xaxis_title='Football Teams',
+        yaxis_title='Number of Matches',
+        xaxis_title_font=dict(size=18),  
+        yaxis_title_font=dict(size=18)  
+        )
     return gif
 
 @app.callback(
-    Output(component_id='thirdg', component_property='figure'),
+    [Output(component_id='thirdg', component_property='figure'),
+    Output(component_id='fourthg', component_property='figure')],
     Input(component_id='tab3_dd_team', component_property='value')
 )
 
 
-def creat_tab3(team):
+def creat_tabs3(team):
     team_df = tab3_df[tab3_df['team'] == team]
-    gif = px.bar(
-        data_frame=team_df, x='year', y='count',
+    thirdg_figure = px.bar(
+        data_frame=team_df, x='year', y='count', title='Number of matches played by year of each football team',
         template='plotly_dark'
     )
-    return gif
+    thirdg_figure.update_layout(
+        title={
+            'text': 'Number of matches played by year of each football team:',
+            'x': 0.5,
+            'xanchor': 'center',
+            'font': {'size': 22}  
+        },
+        xaxis_title='Years',
+        yaxis_title='Number of Matches',
+        xaxis_title_font=dict(size=18),  
+        yaxis_title_font=dict(size=18)  
+        )
+
+    all_data = tab3_df.groupby('year').agg({'count': 'sum'}).reset_index()
+    fourthg_figure = px.bar(
+        data_frame=all_data, x='year', y='count',
+        template='plotly_dark'
+    )
+    fourthg_figure.update_layout(
+        xaxis_title='Years',
+        yaxis_title='Number of Matches',
+        xaxis_title_font=dict(size=18),  
+        yaxis_title_font=dict(size=18)
+    )
+
+    return thirdg_figure, fourthg_figure
 
 if __name__ == '__main__':
     app.run_server()
